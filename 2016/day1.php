@@ -1,6 +1,6 @@
 <?php
 
-// Advent of code. Day One.
+// Advent of Code 2016. Day One.
 
 class dayone {
     private $instructions, $facing, $coord, $coordhistory, $firstlocationtwice;

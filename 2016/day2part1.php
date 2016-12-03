@@ -1,6 +1,6 @@
 <?php
 
-// Advent of code. Day Two, Part One.
+// Advent of Code 2016. Day Two, Part One.
 
 class daytwo {
     private $instructions, $keypad, $x, $y, $code;
