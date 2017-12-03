@@ -27,3 +27,4 @@ for ($j = 0; $j <= $len - 1; $j++) {
 // Part Two: 1072
 echo 'Part One: ' . $out1 . PHP_EOL;
 echo 'Part Two: ' . $out2 . PHP_EOL;
+echo 'Memory usage: ' . number_format(memory_get_peak_usage() / 1024) . 'Kb' . PHP_EOL;
