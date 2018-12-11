@@ -73,6 +73,6 @@ $timeend = microtime(true);
 
 // Part Two: 6390 (D)
 // echo "Part Two:\t" . $out2 . PHP_EOL;
-echo "Part Two:\t" . $out1 . "\t(time taken:\t" . number_format($timeend - $timepartone, 2) . 's)' . PHP_EOL;
+echo "Part Two:\t" . $out2 . "\t(time taken:\t" . number_format($timeend - $timepartone, 2) . 's)' . PHP_EOL;
 echo "Memory usage:\t" . number_format(memory_get_peak_usage() / 1024) . 'Kb' . PHP_EOL;
 echo "Time Taken:\t" . number_format($timeend - $timestart, 2) . 's' . PHP_EOL;
