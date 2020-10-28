@@ -3,14 +3,14 @@
 
 // Advent of Code 2018. Day Eleven. http://adventofcode.com/2018/day/11
 
-$timestart = microtime(true);
-
 echo 'Advent of Code 2018, Day Eleven.' . PHP_EOL;
+
+$time_start = microtime(true);
 
 $out1 = $out2 = $largest = $largestx = $largesty = 0;
 $grid = [];
 
-$instructions = 7400;
+$instructions = (int) file('11.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) or die('No file.' . PHP_EOL);
 
 function draw3x3(int $inx, int $iny) : string {
     global $grid;
@@ -76,8 +76,8 @@ for ($y = 1; $y <= 298; $y++ ) {
 $out1 = "{$largestx},{$largesty}";
 
 // Part One: "34,72"
-$timepartone = microtime(true);
-echo "Part One:\t" . $out1 . "\t(time taken:\t" . number_format($timepartone - $timestart, 6) . 's)' . PHP_EOL;
+$time_part_one = microtime(true);
+echo "Part One:\t" . $out1 . "\t(time taken:\t" . number_format(($time_part_one - $time_start) * 1000, 3) . ' ms)' . PHP_EOL;
 
 // Part Two.
 for ($s = 1; $s <= 300; $s++) {
@@ -107,9 +107,11 @@ for ($s = 1; $s <= 300; $s++) {
 }
 $out2 = "{$largestx},{$largesty},{$largests}";
 
-$timeend = microtime(true);
+$time_end = microtime(true);
 
 // Part Two: "233,187,13"
-echo "Part Two:\t" . $out2 . "\t(time taken:\t" . number_format($timeend - $timepartone, 6) . 's)' . PHP_EOL;
+if ($out2) {
+    echo "Part Two:\t" . $out2 . "\t(time taken:\t" . number_format($time_end - $time_part_one, 6) . ' s)' . PHP_EOL;
+}
 echo "Memory usage:\t" . number_format(memory_get_peak_usage() / 1024) . 'Kb' . PHP_EOL;
-echo "Time Taken:\t" . number_format($timeend - $timestart, 6) . 's' . PHP_EOL;
+echo "Time Taken:\t" . number_format($time_end - $time_start, 6) . ' s' . PHP_EOL;

@@ -1,15 +1,4 @@
-#!/usr/bin/php
-<?php
-
-// Advent of Code 2018. Day Three. http://adventofcode.com/2018/day/3
-
-$out1 = $out2 = 0;
-$fabric = [];
-$unalloc = '.';
-$alloc = 'o';
-$overalloc = 'x';
-
-$instructions = '#1 @ 596,731: 11x27
+#1 @ 596,731: 11x27
 #2 @ 20,473: 23x22
 #3 @ 730,802: 23x23
 #4 @ 212,725: 28x25
@@ -1275,75 +1264,4 @@ $instructions = '#1 @ 596,731: 11x27
 #1264 @ 950,847: 13x13
 #1265 @ 549,947: 11x18
 #1266 @ 850,773: 23x22
-#1267 @ 95,29: 17x28';
-
-// Prepare the grid.
-$w = $h = 1000;
-for ($y = 0; $y <= $h; $y++) {
-    for ($x = 0; $x <= $w; $x++) {
-        $fabric[$y][$x] = $unalloc;
-    }
-}
-
-// Part One.
-$split_lineend = explode(PHP_EOL, $instructions);
-foreach ($split_lineend as $key => $line) {
-    // Just some stuff to make the source data nicer.
-    $line = explode(' ', $line);
-    $line['id'] = $line[0];
-    $tmp = explode(',', $line[2]);
-    $line['x'] = (int) $tmp[0];
-    $line['y'] = (int) substr($tmp[1], 0, strlen($tmp[1]) - 1 );
-    $tmp = explode('x', $line[3]);
-    $line['w'] = (int) $tmp[0];
-    $line['h'] = (int) $tmp[1];
-    for ($j = 0; $j <= 3; $j++) {
-        unset($line[$j]);
-    }
-    // Save it back for part 2.
-    $split_lineend[$key] = $line;
-
-    // Fill.
-    for ($k = $line['y']; $k < $line['y'] + $line['h']; $k++ ) {
-        for ($j = $line['x']; $j < $line['x'] + $line['w']; $j++ ) {
-            if ($fabric[$j][$k] == $alloc) {
-                $fabric[$j][$k] = $overalloc;
-            } else if ($fabric[$j][$k] == $overalloc) {
-                // Do nothing.
-            } else {
-                $fabric[$j][$k] = $alloc;
-            }
-        }
-    }
-}
-for ($y = 0; $y <= $h; $y++) {
-    for ($x = 0; $x <= $w; $x++) {
-        if ($fabric[$x][$y] == $overalloc) {
-            $out1++;
-        }
-    }
-}
-
-// Part Two.
-foreach ($split_lineend as $key => $line) {
-    $overwritten = false;
-    for ($k = $line['y']; $k < $line['y'] + $line['h']; $k++ ) {
-        for ($j = $line['x']; $j < $line['x'] + $line['w']; $j++ ) {
-            if ($fabric[$j][$k] == $overalloc) {
-                $overwritten = true;
-                break 2;
-            }
-        }
-    }
-    if ($overwritten == false) {
-        $out2 = substr($line['id'], 1);
-        break;
-    }
-}
-
-// Part One: 107043
-// Part Two: 346
-echo 'Advent of Code 2018, Day Three.' . PHP_EOL;
-echo 'Part One: ' . $out1 . PHP_EOL;
-echo 'Part Two: ' . $out2 . PHP_EOL;
-echo 'Memory usage: ' . number_format(memory_get_peak_usage() / 1024) . 'Kb' . PHP_EOL;
+#1267 @ 95,29: 17x28

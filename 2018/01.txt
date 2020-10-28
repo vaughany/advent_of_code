@@ -1,12 +1,4 @@
-#!/usr/bin/php
-<?php
-
-// Advent of Code 2018. Day One. http://adventofcode.com/2018/day/1
-
-$out1 = $out2 = 0;
-$frequencies = [];
-
-$instructions = '+13
++13
 +9
 +8
 +1
@@ -993,36 +985,4 @@ $instructions = '+13
 +470
 -67792
 +3
-+135555';
-
-// Part One.
-$split_lineend = explode(PHP_EOL, $instructions);
-foreach ($split_lineend as $line) {
-    if (substr($line, 0, 1) == '+') {
-        $out1 += substr($line, 1);
-    } else {
-        $out1 -= substr($line, 1);
-    }
-}
-
-// Part Two.
-while(true) {
-    foreach ($split_lineend as $line) {
-        if (substr($line, 0, 1) == '+') {
-            $out2 += substr($line, 1);
-        } else {
-            $out2 -= substr($line, 1);
-        }
-        if (isset($frequencies[$out2])) {
-            break 2;
-        }
-        $frequencies[$out2] = 1;
-    }
-}
-
-// Part One: 493
-// Part Two: 413
-echo 'Advent of Code 2018, Day One.' . PHP_EOL;
-echo 'Part One: ' . $out1 . PHP_EOL;
-echo 'Part Two: ' . $out2 . PHP_EOL;
-echo 'Memory usage: ' . number_format(memory_get_peak_usage() / 1024) . 'Kb' . PHP_EOL;
++135555

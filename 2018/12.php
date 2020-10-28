@@ -3,70 +3,23 @@
 
 // Advent of Code 2018. Day Twelve. http://adventofcode.com/2018/day/12
 
-$timestart = microtime(true);
-
 echo 'Advent of Code 2018, Day Twelve.' . PHP_EOL;
+
+$timestart = microtime(true);
 
 $out1 = $out2 = 0;
 
 $pots = '#.#.#...#..##..###.##.#...#.##.#....#..#.#....##.#.##...###.#...#######.....##.###.####.#....#.#..##';
-$instructions = '#...# => #
-....# => .
-##..# => #
-.#.## => #
-##.## => .
-###.# => #
-..... => .
-...#. => .
-.#.#. => #
-#.##. => #
-..#.# => #
-.#... => #
-#.#.. => .
-##.#. => .
-.##.. => #
-#..#. => .
-.###. => .
-..#.. => .
-#.### => .
-..##. => .
-.#..# => #
-.##.# => .
-.#### => .
-...## => #
-#.#.# => #
-..### => .
-#..## => .
-####. => #
-##### => .
-###.. => #
-##... => #
-#.... => .';
+$pots = '#..#.#..##......###...###';
 
-
-// $pots = '#..#.#..##......###...###';
-// $instructions = '...## => #
-// ..#.. => #
-// .#... => #
-// .#.#. => #
-// .#.## => #
-// .##.. => #
-// .#### => #
-// #.#.# => #
-// #.### => #
-// ##.#. => #
-// ##.## => #
-// ###.. => #
-// ###.# => #
-// ####. => #';
+$instructions = file('12.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) or die('No file.' . PHP_EOL);
 //$instructions = '.#..# => #';
 
 $pots = ".....{$pots}.....";
 
 // Part One.
 $ins = [];
-$split_lineend = explode(PHP_EOL, $instructions);
-foreach ($split_lineend as $key => $line) {
+foreach ($instructions as $key => $line) {
     $tmp = explode(' ', $line);
     $ins[$key]['note'] = $tmp[0];
     $ins[$key]['action'] = ($tmp[2] == '#') ? 'add' : 'remove';
