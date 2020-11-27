@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 // Advent of Code 2015. Day Three.

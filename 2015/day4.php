@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 // Advent of Code 2015. Day Four.
@@ -8,7 +9,7 @@ for ($j = 1; $j <= 10000000; $j++) {
     $plaintext = $instructions . $j;
     $hash = md5($plaintext);
     if (preg_match('/^00000/', $hash)) {
-        echo 'First hash with "00000" at the start: ' . $hash . ' from input: "' . $plaintext . '".' . PHP_EOL;
+        echo 'First hash with "00000" at the start: ' . $hash . ' from input: "' . $plaintext . '" is ' . $j . '.' . PHP_EOL;
         break;
     }
 }
@@ -17,7 +18,7 @@ for ($j = 1; $j <= 10000000; $j++) {
     $plaintext = $instructions . $j;
     $hash = md5($plaintext);
     if (preg_match('/^000000/', $hash)) {
-        echo 'First hash with "000000" at the start: ' . $hash . ' from input: "' . $plaintext . '".' . PHP_EOL;
+        echo 'First hash with "000000" at the start: ' . $hash . ' from input: "' . $plaintext . '" is ' . $j . '.' . PHP_EOL;
         break;
     }
 }
