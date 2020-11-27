@@ -1,7 +1,9 @@
 #!/usr/bin/php
 <?php
 
-// Advent of Code 2015. Day Two.
+// Advent of Code 2015. Day Two. http://adventofcode.com/2015/day/2
+
+echo 'Advent of Code 2015, Day Two.' . PHP_EOL;
 
 $instructions = explode(PHP_EOL, '29x13x26
 11x11x14
