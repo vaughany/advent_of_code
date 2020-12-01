@@ -57,7 +57,7 @@ func getInput(filename string) []string {
 		os.Exit(1)
 	} else {
 		if debug {
-			log.Printf("Input file has %d lines / instructions.\n", len(lines))
+			info(fmt.Sprintf("Input file has %d lines / instructions.", len(lines)))
 		}
 	}
 	return lines
@@ -81,6 +81,14 @@ func doOutput(o1, o2 int) {
 	}
 }
 
+func title(title string) {
+	fmt.Println(string("\u001b[32m") + title + string("\u001b[0m"))
+}
+
+func info(info string) {
+	log.Println(string("\u001b[33m") + info + string("\u001b[0m"))
+}
+
 func partOne(ins []int) int {
 	loops := 0
 	for index, i := range ins {
@@ -88,7 +96,7 @@ func partOne(ins []int) int {
 			loops++
 			if i + j == 2020 {
 				if debug {
-					log.Printf("%d + %d == 2020! (Loops: %d)\n", i, j, loops)
+					info(fmt.Sprintf("%d + %d == 2020! (Loops: %d)", i, j, loops))
 				}
 				return i * j
 			}
@@ -105,7 +113,7 @@ func partTwo(ins []int) int {
 				loops++
 				if i + j + k == 2020 {
 					if debug {
-						log.Printf("%d + %d + %d == 2020! (Loops: %d)\n", i, j, k, loops)
+						info(fmt.Sprintf("%d + %d + %d == 2020! (Loops: %d)", i, j, k, loops))
 					}
 					return i * j * k
 				}
@@ -116,7 +124,7 @@ func partTwo(ins []int) int {
 }
 
 func main() {
-	fmt.Println(string("\u001b[32m") + "Advent of Code 2020, Day One." + string("\u001b[0m"))
+	title("Advent of Code 2020, Day One.")
 
 	out1, out2 := 0, 0
 	instructions := getInstructions(getInput("01.txt"))
