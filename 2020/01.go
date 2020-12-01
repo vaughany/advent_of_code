@@ -9,24 +9,39 @@
 //   upx --ultra-brute 01.exe
 //     `upx` will take the filesize down from 1.1Mb to < 400Kb, but will increase the runtime from ~5ms to ~50ms.
 
+/*
+  Version 1.1: added slices of the index of the outer loops to the inner loop, to save repeating the calculations but
+	the other way around (part one) or in different orders (part two). Saves about a third of the loops on part one
+  (18,710 down from 29,588) and about half of the loops on part two (1,736,373 down from 3,739,732) with my input.
+	Also added flags for debugging info, as well as moving the two parts into functions, and general tidying.
+*/
+
 package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
-	// "log"
+	"log"
 	"os"
 	"strconv"
 )
 
-const debug bool = false
+var debug bool = false
 
-var out1, out2 int
-var lines []string
-var ins []int
+func init() {
+	const (
+		defaultDebug = false
+		usageDebug = "Display debugging information"
+	)
+	flag.BoolVar(&debug, "debug", defaultDebug, usageDebug)
+	flag.BoolVar(&debug, "d", defaultDebug, usageDebug)
+	flag.Parse()
+}
 
 // Read a file with many lines and return an array (of strings).
 func getInput(filename string) []string {
+	lines := []string{}
 	file, err := os.Open(filename)
 	defer file.Close()
 	if err != nil {
@@ -37,58 +52,80 @@ func getInput(filename string) []string {
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}
+	if len(lines) < 1 {
+		fmt.Println("Input file had no lines.")
+		os.Exit(1)
+	} else {
+		if debug {
+			log.Printf("Input file has %d lines / instructions.\n", len(lines))
+		}
+	}
 	return lines
 }
 
 func getInstructions(lines []string) []int {
+	tmp := []int{}
 	for _, line := range lines {
-		i, _ := strconv.Atoi(line)
-		ins = append(ins, i)
+		t, _ := strconv.Atoi(line)
+		tmp = append(tmp, t)
 	}
-	return ins
+	return tmp
 }
 
 func doOutput(o1, o2 int) {
-	fmt.Println("Part One: ", o1)
+	if o1 != 0 && o2 == 0 {
+		fmt.Println("Part One: ", o1)
+	}
 	if o2 != 0 {
 		fmt.Println("Part Two: ", o2)
 	}
 }
 
-func main() {
-	msg := "Advent of Code 2020, Day One."
-	fmt.Println(msg)
-	// log.Println(msg)
-
-	lines = getInput("01.txt")
-	ins = getInstructions(lines)
-
-	part1:
-	for _, i := range ins {
-		for _, j := range ins {
+func partOne(ins []int) int {
+	loops := 0
+	for index, i := range ins {
+		for _, j := range ins[index:] {
+			loops++
 			if i + j == 2020 {
-				fmt.Println(i, j, "== 2020!")
-				out1 = i * j
-				break part1
+				if debug {
+					log.Printf("%d + %d == 2020! (Loops: %d)\n", i, j, loops)
+				}
+				return i * j
 			}
 		}
-  }
+	}
+	return -1
+}
 
-	part2:
-	for _, i := range ins {
-		for _, j := range ins {
-			for _, k := range ins {
+func partTwo(ins []int) int {
+	loops := 0
+	for iindex, i := range ins {
+		for jindex, j := range ins[iindex:] {
+			for _, k := range ins[jindex:] {
+				loops++
 				if i + j + k == 2020 {
-					fmt.Println(i, j, k, "== 2020!")
-					out2 = i * j * k
-					break part2
+					if debug {
+						log.Printf("%d + %d + %d == 2020! (Loops: %d)\n", i, j, k, loops)
+					}
+					return i * j * k
 				}
 			}
 		}
-
 	}
+	return -1
+}
+
+func main() {
+	fmt.Println(string("\u001b[32m") + "Advent of Code 2020, Day One." + string("\u001b[0m"))
+
+	out1, out2 := 0, 0
+	instructions := getInstructions(getInput("01.txt"))
 
 	// Part One: 1019904
+	out1 = partOne(instructions)
+	doOutput(out1, out2)
+
 	// Part Two: 176647680
+	out2 = partTwo(instructions)
 	doOutput(out1, out2)
 }
