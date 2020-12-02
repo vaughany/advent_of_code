@@ -9,6 +9,8 @@
 //   upx --ultra-brute 01.exe
 //     `upx` will take the filesize down from 1.1Mb to < 400Kb, but will increase the runtime from ~5ms to ~50ms.
 
+// Advent of Code 2020, Day One.
+
 /*
   Version 1.1: added slices of the index of the outer loops to the inner loop, to save repeating the calculations but
 	the other way around (part one) or in different orders (part two). Saves about a third of the loops on part one
