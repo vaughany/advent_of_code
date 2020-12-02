@@ -1,5 +1,5 @@
-// Run with: `go run 01.go`
-// Build / compile with: `go build -ldflags "-s -w" 01.go`
+// Run with: `go run 02.go`
+// Build / compile with: `go build -ldflags "-s -w" 02.go`
 
 // Advent of Code 2020, Day Two.
 
