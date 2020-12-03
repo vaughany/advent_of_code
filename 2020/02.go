@@ -16,6 +16,7 @@ import (
 )
 
 var debug bool = false
+var filename string = "02.txt"
 type Instruction struct {
 	min, max int
 	subject, password string
@@ -23,11 +24,13 @@ type Instruction struct {
 
 func init() {
 	const (
-		defaultDebug = false
 		usageDebug = "Display debugging information"
+		usageFilename = "Specify a file to read input from"
 	)
-	flag.BoolVar(&debug, "debug", defaultDebug, usageDebug)
-	flag.BoolVar(&debug, "d", defaultDebug, usageDebug)
+	// flag.BoolVar(&debug, "debug", debug, usageDebug)
+	flag.BoolVar(&debug, "d", debug, usageDebug)
+	// flag.StringVar(&filename, "filename", filename, usageFilename)
+	flag.StringVar(&filename, "f", filename, usageFilename)
 	flag.Parse()
 }
 
@@ -117,7 +120,7 @@ func main() {
 	title("Advent of Code 2020, Day Two.")
 
 	out1, out2 := 0, 0
-	instructions := getInstructions(getInput("02.txt"))
+	instructions := getInstructions(getInput(filename))
 
 	if debug {
 		info(fmt.Sprint(instructions))

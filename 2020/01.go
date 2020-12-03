@@ -30,14 +30,17 @@ import (
 )
 
 var debug bool = false
+var filename string = "01.txt"
 
 func init() {
 	const (
-		defaultDebug = false
 		usageDebug = "Display debugging information"
+		usageFilename = "Specify a file to read input from"
 	)
-	flag.BoolVar(&debug, "debug", defaultDebug, usageDebug)
-	flag.BoolVar(&debug, "d", defaultDebug, usageDebug)
+	// flag.BoolVar(&debug, "debug", debug, usageDebug)
+	flag.BoolVar(&debug, "d", debug, usageDebug)
+	// flag.StringVar(&filename, "filename", filename, usageFilename)
+	flag.StringVar(&filename, "f", filename, usageFilename)
 	flag.Parse()
 }
 
@@ -129,7 +132,7 @@ func main() {
 	title("Advent of Code 2020, Day One.")
 
 	out1, out2 := 0, 0
-	instructions := getInstructions(getInput("01.txt"))
+	instructions := getInstructions(getInput(filename))
 
 	// Part One: 1019904
 	out1 = partOne(instructions)
