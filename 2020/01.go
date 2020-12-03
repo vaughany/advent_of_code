@@ -27,10 +27,12 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 )
 
 var debug bool = false
 var filename string = "01.txt"
+var timing bool = false
 
 func init() {
 	const (
@@ -41,6 +43,7 @@ func init() {
 	flag.BoolVar(&debug, "d", debug, usageDebug)
 	// flag.StringVar(&filename, "filename", filename, usageFilename)
 	flag.StringVar(&filename, "f", filename, usageFilename)
+	flag.BoolVar(&timing, "t", timing, "Display timing information")
 	flag.Parse()
 }
 
@@ -60,10 +63,9 @@ func getInput(filename string) []string {
 	if len(lines) < 1 {
 		fmt.Println("Input file had no lines.")
 		os.Exit(1)
-	} else {
-		if debug {
-			info(fmt.Sprintf("Input file has %d lines / instructions.", len(lines)))
-		}
+	}
+	if debug {
+		info(fmt.Sprintf("Input file has %d lines / instructions.", len(lines)))
 	}
 	return lines
 }
@@ -92,6 +94,10 @@ func title(title string) {
 
 func info(info string) {
 	log.Println(string("\u001b[33m") + info + string("\u001b[0m"))
+}
+
+func timeinfo(info string) {
+	log.Println(string("\u001b[36m") + info + string("\u001b[0m"))
 }
 
 func partOne(ins []int) int {
@@ -131,14 +137,33 @@ func partTwo(ins []int) int {
 func main() {
 	title("Advent of Code 2020, Day One.")
 
+	var timeSetup, timeOne, timeTwo time.Time
+	if timing {
+		timeSetup = time.Now()
+	}
+
 	out1, out2 := 0, 0
 	instructions := getInstructions(getInput(filename))
+
+	if timing {
+		timeinfo(fmt.Sprintf("Setup took %s", time.Since(timeSetup)))
+		timeOne = time.Now()
+	}
 
 	// Part One: 1019904
 	out1 = partOne(instructions)
 	doOutput(out1, out2)
+	if timing {
+  	timeinfo(fmt.Sprintf("Part One took %s", time.Since(timeOne)))
+		timeTwo = time.Now()
+	}
 
 	// Part Two: 176647680
 	out2 = partTwo(instructions)
 	doOutput(out1, out2)
+	if timing {
+		timeinfo(fmt.Sprintf("Part Two took %s", time.Since(timeTwo)))
+		timeinfo(fmt.Sprintf("Both Parts took %s", time.Since(timeOne)))
+		timeinfo(fmt.Sprintf("Everything took %s", time.Since(timeSetup)))
+	}
 }

@@ -13,24 +13,21 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var debug bool = false
 var filename string = "02.txt"
+var timing bool = false
 type Instruction struct {
 	min, max int
 	subject, password string
 }
 
 func init() {
-	const (
-		usageDebug = "Display debugging information"
-		usageFilename = "Specify a file to read input from"
-	)
-	// flag.BoolVar(&debug, "debug", debug, usageDebug)
-	flag.BoolVar(&debug, "d", debug, usageDebug)
-	// flag.StringVar(&filename, "filename", filename, usageFilename)
-	flag.StringVar(&filename, "f", filename, usageFilename)
+	flag.BoolVar(&debug, "d", debug, "Display debugging information")
+	flag.StringVar(&filename, "f", filename, "Specify a file to read input from")
+	flag.BoolVar(&timing, "t", timing, "Display timing information")
 	flag.Parse()
 }
 
@@ -50,10 +47,9 @@ func getInput(filename string) []string {
 	if len(lines) < 1 {
 		fmt.Println("Input file had no lines.")
 		os.Exit(1)
-	} else {
-		if debug {
-			info(fmt.Sprintf("Input file has %d lines / instructions.", len(lines)))
-		}
+	}
+	if debug {
+		info(fmt.Sprintf("Input file has %d lines / instructions.", len(lines)))
 	}
 	return lines
 }
@@ -85,6 +81,10 @@ func title(title string) {
 
 func info(info string) {
 	log.Println(string("\u001b[33m") + info + string("\u001b[0m"))
+}
+
+func timeinfo(info string) {
+	log.Println(string("\u001b[36m") + info + string("\u001b[0m"))
 }
 
 func partOne(ins []Instruction) int {
@@ -119,6 +119,11 @@ func partTwo(ins []Instruction) int {
 func main() {
 	title("Advent of Code 2020, Day Two.")
 
+	var timeSetup, timeOne, timeTwo time.Time
+	if timing {
+		timeSetup = time.Now()
+	}
+
 	out1, out2 := 0, 0
 	instructions := getInstructions(getInput(filename))
 
@@ -126,11 +131,25 @@ func main() {
 		info(fmt.Sprint(instructions))
 	}
 
+	if timing {
+		timeinfo(fmt.Sprintf("Setup took %s", time.Since(timeSetup)))
+		timeOne = time.Now()
+	}
+
 	// Part One: 572
 	out1 = partOne(instructions)
 	doOutput(out1, out2)
+	if timing {
+  	timeinfo(fmt.Sprintf("Part One took %s", time.Since(timeOne)))
+		timeTwo = time.Now()
+	}
 
 	// Part Two: 306
 	out2 = partTwo(instructions)
 	doOutput(out1, out2)
+	if timing {
+		timeinfo(fmt.Sprintf("Part Two took %s", time.Since(timeTwo)))
+		timeinfo(fmt.Sprintf("Both Parts took %s", time.Since(timeOne)))
+		timeinfo(fmt.Sprintf("Everything took %s", time.Since(timeSetup)))
+	}
 }
