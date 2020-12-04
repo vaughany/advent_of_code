@@ -59,6 +59,11 @@ func isHexString(s string) bool {
 	return err == nil
 }
 
+func isBetween(value string, from int, to int) bool {
+	int, _ := strconv.Atoi(value)
+	return int >= from && int <= to
+}
+
 // Today's input is *potentially* spread over multiple lines (and in no particular order).
 func getInstructions(lines []string) []string {
 	tmp := []string{}
@@ -106,31 +111,28 @@ func processInstructions(ins []string) []Passport {
 				}
 			case "hgt":
 				measurement := value[len(value)-2:]
-				int, _ := strconv.Atoi(value[:len(value)-2])
-				if measurement == "cm" {
-					if int >= 150 && int <= 193 {
+				switch measurement {
+				case "cm":
+					if isBetween(value[:len(value)-2], 150, 193) {
 						ppt.partTwoValidFields++
 					}
-				} else if measurement == "in" {
-					if int >= 59 && int <= 76 {
+				case "in":
+					if isBetween(value[:len(value)-2], 59, 76) {
 						ppt.partTwoValidFields++
 					}
 				}
 			case "byr":
-				int, _ := strconv.Atoi(value)
-				if int >= 1920 && int <= 2002 && len(value) == 4 {
+				if isBetween(value, 1920, 2002) && len(value) == 4 {
 					ppt.partTwoValidFields++
 				}
 			// case "cid":
 			// 	ppt.partTwoValidFields++
 			case "eyr":
-				int, _ := strconv.Atoi(value)
-				if int >= 2020 && int <= 2030 && len(value) == 4 {
+				if isBetween(value, 2020, 2030) && len(value) == 4 {
 					ppt.partTwoValidFields++
 				}
 			case "iyr":
-				int, _ := strconv.Atoi(value)
-				if int >= 2010 && int <= 2020 && len(value) == 4 {
+				if isBetween(value, 2010, 2020) && len(value) == 4 {
 					ppt.partTwoValidFields++
 				}
 			case "pid":
