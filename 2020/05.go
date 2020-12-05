@@ -93,9 +93,10 @@ func partOneAndTwo(ins []string) (int, int) {
 		colId, _ := strconv.ParseInt(j[7:], 2, 0)
 
 		if debug {
-			fmt.Println(i, "=", j, ":", rowId, colId)
+			info(fmt.Sprint(i, "=", j, ":", j[:7], "=", rowId, ":", j[7:], "=", colId))
 		}
 
+		// I hate that I need to use int() to convert from int64...
 		seatId := int(rowId) * 8 + int(colId)
 		allSeats[seatId] = 0
 
@@ -105,6 +106,11 @@ func partOneAndTwo(ins []string) (int, int) {
 		if (seatId < lowestSeatId) {
 			lowestSeatId = seatId
 		}
+	}
+
+	if debug {
+		info(fmt.Sprint("Lowest: ", lowestSeatId, " Highest: ", highestSeatId))
+		fmt.Println(allSeats[lowestSeatId:highestSeatId])
 	}
 
 	for x := lowestSeatId; x < highestSeatId; x++ {
