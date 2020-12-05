@@ -100,6 +100,7 @@ func timeinfo(info string) {
 	log.Println(string("\u001b[36m") + info + string("\u001b[0m"))
 }
 
+// Original 'Part One', adding numbers up to 2020.
 func partOne(ins []int) int {
 	loops := 0
 	for index, i := range ins {
@@ -116,6 +117,25 @@ func partOne(ins []int) int {
 	return -1
 }
 
+// New 'Part One', based on the 'subtract from 2020' idea.
+func partOneB(ins []int) int {
+	loops := 0
+	for index, i := range ins {
+		find := 2020 - i
+		for _, j := range ins[index:] {
+			loops++
+			if j == find {
+				if debug {
+					info(fmt.Sprintf("%d + %d == 2020! (Loops: %d)", i, j, loops))
+				}
+				return i * j
+			}
+		}
+	}
+	return -1
+}
+
+// Original 'Part Two', adding numbers up to 2020.
 func partTwo(ins []int) int {
 	loops := 0
 	for iindex, i := range ins {
@@ -123,6 +143,27 @@ func partTwo(ins []int) int {
 			for _, k := range ins[jindex:] {
 				loops++
 				if i + j + k == 2020 {
+					if debug {
+						info(fmt.Sprintf("%d + %d + %d == 2020! (Loops: %d)", i, j, k, loops))
+					}
+					return i * j * k
+				}
+			}
+		}
+	}
+	return -1
+}
+
+// New 'Part Two', based on the 'subtract from 2020' idea.
+func partTwoB(ins []int) int {
+	loops := 0
+	for iindex, i := range ins {
+		find := 2020 - i
+		for jindex, j := range ins[iindex:] {
+			find2 := find - j
+			for _, k := range ins[jindex:] {
+				loops++
+				if k == find2 {
 					if debug {
 						info(fmt.Sprintf("%d + %d + %d == 2020! (Loops: %d)", i, j, k, loops))
 					}
@@ -152,6 +193,7 @@ func main() {
 
 	// Part One: 1019904
 	out1 = partOne(instructions)
+	// out1 = partOneB(instructions)
 	doOutput(out1, out2)
 	if timing {
   	timeinfo(fmt.Sprintf("Part One took %s", time.Since(timeOne)))
@@ -160,6 +202,7 @@ func main() {
 
 	// Part Two: 176647680
 	out2 = partTwo(instructions)
+	// out2 = partTwoB(instructions)
 	doOutput(out1, out2)
 	if timing {
 		timeinfo(fmt.Sprintf("Part Two took %s", time.Since(timeTwo)))
