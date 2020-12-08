@@ -11,18 +11,12 @@ import (
 	"fmt"
 	"log"
 	"os"
-	// "strings"
 	"time"
 )
 
 var debug bool = false
 var filename string = "06.txt"
 var timing bool = false
-
-type Answer struct {
-	// a, b, c, x, y, z, sum int
-	sum int
-}
 
 func init() {
 	flag.BoolVar(&debug, "d", debug, "Display debugging information")
@@ -45,27 +39,17 @@ func getInput(filename string) []string {
 		lines = append(lines, scanner.Text())
 	}
 	if len(lines) < 1 {
-		fmt.Println("Input file had no lines.")
+		fmt.Printf("Input file %s had no lines.", filename)
 		os.Exit(1)
 	}
 	if debug {
-		info(fmt.Sprintf("Input file has %d lines.", len(lines)))
+		info(fmt.Sprintf("Input file %s has %d lines.", filename, len(lines)))
 	}
 	return lines
 }
 
-func getInstructions(lines []string) []string {
-	tmp := []string{}
-	for _, line := range lines {
-		tmp = append(tmp, line)
-	}
-	// Add one more blank line.
-	tmp = append(tmp, "")
-	return tmp
-}
-
 func doOutput(o1, o2 int) {
-	if o1 != 0 && o2 == 0 {
+	if o1 != 0 {
 		fmt.Println("Part One: ", o1)
 	}
 	if o2 != 0 {
@@ -85,57 +69,62 @@ func timeinfo(info string) {
 	log.Println(string("\u001b[36m") + info + string("\u001b[0m"))
 }
 
-func partOne(ins []string) int {
-	tmp := []Answer{}
-	letters := [26]bool{}
-	total := 0
+func partOneAndTwo(ins []string) (int, int) {
+	groupNum := 0
+	groupSize := []int{0}
+	groups := []map[rune]int{
+		make(map[rune]int),
+	}
 
-	for _, in := range ins {
+	for _, i := range ins {
+		if debug {
+			info(fmt.Sprintf("Instruction: %s", i))
+		}
+		if i == "" {
+			groups = append(groups, make(map[rune]int))
+			groupSize = append(groupSize, 0)
+			groupNum++
+			continue
+		}
+		for _, ii := range i {
+			groups[groupNum][ii]++
+		}
+		groupSize[groupNum]++
+	}
 
-		// If there's some data to be processed.
-		if in != "" {
+	if debug {
+		info(fmt.Sprintf("Group Info: groups: %d, size: %d.", groups, groupSize))
+	}
+
+	part1, part2 := 0, 0
+	for groupIndex, group := range groups {
+		if debug {
+			info(fmt.Sprintf("Group Info: group: %d.", group))
+		}
+		part1 += len(group)
+		for _, count := range group {
 			if debug {
-				info(fmt.Sprint(in))
+				info(fmt.Sprintf("Group Count: %d, Group Size: %d.", count, groupSize[groupIndex]))
 			}
-			for _, char := range in {
-				letters[char - 97] = true
+			if count == groupSize[groupIndex] {
+				part2++
 			}
-
-		} else { // Process the data and move on.
-			if debug {
-				info(fmt.Sprint(">>> end of group"))
-			}
-			yesses := 0
-			for _, value := range letters {
-				if value {
-					yesses++
-				}
-			}
-			tmp = append(tmp, Answer{sum: yesses})
-			letters = [26]bool{}
 		}
 	}
 
-	for _, i := range tmp {
-		total += i.sum
-	}
-	return total
-}
-
-func partTwo(ins []string) int {
-	return -1
+	return part1, part2
 }
 
 func main() {
 	title("Advent of Code 2020, Day Six.")
 
-	var timeSetup, timeOne, timeTwo time.Time
+	var timeSetup, timeOne time.Time
 	if timing {
 		timeSetup = time.Now()
 	}
 
 	out1, out2 := 0, 0
-	instructions := getInstructions(getInput(filename))
+	instructions := getInput(filename)
 
 	if timing {
 		timeinfo(fmt.Sprintf("Setup took %s", time.Since(timeSetup)))
@@ -143,18 +132,10 @@ func main() {
 	}
 
 	// Part One: 6742
-	out1 = partOne(instructions)
+	// Part Two: 3447
+	out1, out2 = partOneAndTwo(instructions)
 	doOutput(out1, out2)
 	if timing {
-  	timeinfo(fmt.Sprintf("Part One took %s", time.Since(timeOne)))
-		timeTwo = time.Now()
-	}
-
-	// Part Two:
-	out2 = partTwo(instructions)
-	doOutput(out1, out2)
-	if timing {
-		timeinfo(fmt.Sprintf("Part Two took %s", time.Since(timeTwo)))
 		timeinfo(fmt.Sprintf("Both Parts took %s", time.Since(timeOne)))
 		timeinfo(fmt.Sprintf("Everything took %s", time.Since(timeSetup)))
 	}
