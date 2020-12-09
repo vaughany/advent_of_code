@@ -121,13 +121,13 @@ FoundAddition:
 	return -1
 }
 
-func sumThese(in []int) int {
-	if len(in) < 2{
+func sumThese(array []int) int {
+	if len(array) < 2{
 		panic("Sum must be minimum of two numbers.")
 	}
 	res := 0
-	for _, i := range in {
-		res += i
+	for _, a := range array {
+		res += a
 	}
 	return res
 }
@@ -135,12 +135,8 @@ func sumThese(in []int) int {
 func smallest(array []int) int {
 	res := 0
 	for _, a := range array {
-		if res == 0 {
+		if res == 0 || a < res {
 			res = a
-		} else {
-			if a < res {
-				res = a
-			}
 		}
 	}
 	return res
@@ -149,12 +145,8 @@ func smallest(array []int) int {
 func largest(array []int) int {
 	res := 0
 	for _, a := range array {
-		if res == 0 {
+		if res == 0 || a > res {
 			res = a
-		} else {
-			if a > res {
-				res = a
-			}
 		}
 	}
 	return res
