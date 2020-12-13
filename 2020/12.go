@@ -270,7 +270,7 @@ func partTwo(instructions []string) (int) {
 }
 
 func main() {
-	title("Advent of Code 2020, Day twelve.")
+	title("Advent of Code 2020, Day Twelve.")
 
 	var timeSetup, timeOne, timeTwo time.Time
 	if timing {

@@ -10,7 +10,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	// "math"
 	"os"
 	"sort"
 	"strconv"
@@ -155,7 +154,7 @@ func main() {
 		timeTwo = time.Now()
 	}
 
-	// Part Two: 
+	// Part Two:
 	out2 = partTwo(busses)
 	doOutput(out1, out2)
 	if timing {
