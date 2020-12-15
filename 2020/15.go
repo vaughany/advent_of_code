@@ -19,12 +19,13 @@ import (
 var debug bool = false
 var filename string = "15.txt"
 var timing bool = false
-var target int = 2020
+var output bool = false
 
 func init() {
 	flag.BoolVar(&debug, "d", debug, "Display debugging information")
 	flag.StringVar(&filename, "f", filename, "Specify a file to read input from")
 	flag.BoolVar(&timing, "t", timing, "Display timing information")
+	flag.BoolVar(&output, "o", output, "Save output to disk")
 	flag.Parse()
 }
 
@@ -49,6 +50,21 @@ func getInput(filename string) []string {
 		info(fmt.Sprintf("Input file %s has %d lines.", filename, len(lines)))
 	}
 	return lines
+}
+
+func dumpOutputToFile(filename string, data []int) {
+	file, err := os.Create(filename)
+	defer file.Close()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	w := bufio.NewWriter(file)
+	for _, line := range data {
+			fmt.Fprintln(w, line)
+	}
+	// return w.Flush()
+	info(fmt.Sprintf("Output file %s saved successully with %d lines.", filename, len(data)))
 }
 
 // TODO: One-line input can be handled differently.
@@ -85,51 +101,49 @@ func timeinfo(info string) {
 	log.Println(string("\u001b[36m") + info + string("\u001b[0m"))
 }
 
-func getValue(instructions []int, target int) (int) {
-	for x := len(instructions) - 2; x >= 0; x-- {
-		if instructions[x] == target {
-			return x
-		}
-	}
-	return -1
-}
-
 func partsOneAndTwo(instructions []int, target int) (int) {
-	seen := map[int]bool{}
-	// lastLocation := map[int]int{}
+	seen := map[int]int{}
 
-	for _, instruction := range instructions {
-		seen[instruction] = true
-		// lastLocation[instruction] = i
+	for i, instruction := range instructions {
+		seen[instruction] = i + 1
 	}
 	// As the start of the code deals with the previous number, we kinda forget we ever saw it.
-	seen[instructions[len(instructions)-1]] = false
-	// delete(lastLocation, instructions[len(instructions)-1])
+	delete(seen, instructions[len(instructions)-1])
 
 	for {
-		previousInstruction := instructions[len(instructions)-1]
-		if seen[previousInstruction] == false {
-			seen[previousInstruction] = true
-			// lastLocation[previousInstruction] = len(instructions) - 1
+		key := instructions[len(instructions)-1]
+		value := len(instructions)-1
+
+		if seen[key] == 0 {
+			if debug {
+				fmt.Printf("\nSeen %d for the first time.\n", key)
+			}
+			seen[key] = value + 1
 			instructions = append(instructions, 0)
 
 		} else {
-			// lastLocation[previousInstruction] = len(instructions) - 1
-			instructions = append(instructions, len(instructions)-1 - getValue(instructions, previousInstruction))
+			if debug {
+				fmt.Printf("\nSeen %d again.\n", key)
+				fmt.Printf("Turn %d - the last time we saw it %d = %d.\n", value + 1, seen[key], value + 1 - seen[key])
+			}
+			instructions = append(instructions, value + 1 - seen[key])
+			seen[key] = value + 1
 		}
 
-		if len(instructions) % 10000 == 0 {
-			fmt.Println("Cycles:", len(instructions))
+		if len(instructions) % 10000000 == 0 {
+			info(fmt.Sprint("Cycles: ", len(instructions)))
 		}
 
 		if len(instructions) == target {
+			if output {
+				dumpOutputToFile("15-output.txt", instructions)
+			}
 			return instructions[len(instructions)-1]
 		}
 
 		if debug {
 			time.Sleep(500 * time.Millisecond)
 			fmt.Println(instructions, seen)
-			// fmt.Println(instructions, seen, lastLocation)
 		}
 	}
 	return -1
@@ -159,8 +173,8 @@ func main() {
 		timeTwo = time.Now()
 	}
 
-	// Part Two:
-	// out2 = partsOneAndTwo(instructions, 30000000)
+	// Part Two: 16671510
+	out2 = partsOneAndTwo(instructions, 30000000)
 	doOutput(out1, out2)
 	if timing {
 		timeinfo(fmt.Sprintf("Part Two took %s", time.Since(timeTwo)))
