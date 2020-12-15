@@ -130,6 +130,7 @@ func partsOneAndTwo(instructions []int, target int) (int) {
 			seen[key] = value + 1
 		}
 
+		// Spits out a progress indication every 10 million lines.
 		if len(instructions) % 10000000 == 0 {
 			info(fmt.Sprint("Cycles: ", len(instructions)))
 		}
