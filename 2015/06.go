@@ -10,7 +10,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -19,25 +18,13 @@ var debug bool = false
 var filename string = "06.txt"
 var timing bool = false
 
-var grid = []string{}
 var gridSize int = 1000
-var lightOff string = "0" // Grid is too large to represent on a terminal anyway, so these characters hardly matter.
-var lightOn string = "1"  // Good to visualise this though.
-var repl = strings.NewReplacer(lightOn, lightOff, lightOff, lightOn)
 
 func init() {
 	flag.BoolVar(&debug, "d", debug, "Display debugging information")
 	flag.StringVar(&filename, "f", filename, "Specify a file to read input from")
 	flag.BoolVar(&timing, "t", timing, "Display timing information")
 	flag.Parse()
-
-	// Grid.
-	for x := 0; x <= gridSize-1; x++ {
-		grid = append(grid, strings.Repeat(lightOff, 1000))
-	}
-	if debug {
-		printGrid(grid)
-	}
 }
 
 // Read a file with many lines and return an array (of strings).
@@ -63,18 +50,6 @@ func getInput(filename string) []string {
 	return lines
 }
 
-func getInstructions(instructions []string) []string {
-	insRepl := strings.NewReplacer("turn ", "", "through ", "")
-
-	for index, ins := range instructions {
-		instructions[index] = insRepl.Replace(ins)
-		if debug {
-			fmt.Println(instructions[index])
-		}
-	}
-	return instructions
-}
-
 func doOutput(o1, o2 int) {
 	if o1 != 0 && o2 == 0 {
 		fmt.Println("Part One: ", o1)
@@ -96,72 +71,137 @@ func timeinfo(info string) {
 	fmt.Println(string("DEBUG:\t\u001b[36m") + info + string("\u001b[0m"))
 }
 
-func printGrid(in []string) {
-	for _, line := range in {
+func printGrid(grid [][]bool) {
+	for i := range grid {
+		line := ""
+		for j := range grid {
+			if grid[i][j] == true {
+				line += "@"
+			} else {
+				line += "."
+			}
+		}
 		info(fmt.Sprint(line))
 	}
-	info("")
 }
 
-func changeLights(grid []string, x1 int, y1 int, x2 int, y2 int, on bool) []string {
-	char := lightOff
-	if on {
-		char = lightOn
-	}
-
-	for j := x1; j <= x2; j++ {
-		insert := strings.Repeat(char, y2-y1+1)
-		grid[j] = fmt.Sprint(grid[j][:y1], insert, grid[j][y2+1:])
+func changeLights(grid [][]bool, x1 int, y1 int, x2 int, y2 int, on bool) [][]bool {
+	for i := x1; i <= x2; i++ {
+		for j := y1; j <= y2; j++ {
+			grid[i][j] = on
+		}
 	}
 	return grid
 }
 
-func toggleLights(grid []string, x1 int, y1 int, x2 int, y2 int) []string {
-	for j := x1; j <= x2; j++ {
-		grid[j] = fmt.Sprint(grid[j][:y1], repl.Replace(string(grid[j][y1:y2+1])), grid[j][y2+1:])
+func toggleLights(grid [][]bool, x1 int, y1 int, x2 int, y2 int) [][]bool {
+	for i := x1; i <= x2; i++ {
+		for j := y1; j <= y2; j++ {
+			grid[i][j] = !grid[i][j]
+		}
 	}
 	return grid
 }
 
-func getCoords(from string, to string) (int, int, int, int) {
-	f := strings.Split(from, ",")
-	x1, _ := strconv.Atoi(f[0])
-	y1, _ := strconv.Atoi(f[1])
-
-	t := strings.Split(to, ",")
-	x2, _ := strconv.Atoi(t[0])
-	y2, _ := strconv.Atoi(t[1])
-
-	return x1, y1, x2, y2
-}
-
-func countLightsOn(grid []string) int {
+func countLightsOn(grid [][]bool) int {
 	out := 0
-	for _, line := range grid {
-		out += strings.Count(line, lightOn)
+	for _, i := range grid {
+		for _, j := range i {
+			if j {
+				out++
+			}
+		}
 	}
 	return out
 }
 
 func partOne(instructions []string) int {
-	for _, ins := range instructions {
-		str := strings.Split(ins, " ")
-		x1, y1, x2, y2 := getCoords(str[1], str[2])
+	grid := make([][]bool, gridSize)
+	for i := range grid {
+		grid[i] = make([]bool, gridSize)
+	}
+	if debug {
+		printGrid(grid)
+	}
 
-		switch str[0] {
-		case "on":
+	for _, ins := range instructions {
+		var x1, y1, x2, y2 int
+
+		switch {
+		case strings.HasPrefix(ins, "turn on"):
+			fmt.Sscanf(ins, "turn on %d,%d through %d,%d", &x1, &y1, &x2, &y2)
 			changeLights(grid, x1, y1, x2, y2, true)
-		case "off":
+
+		case strings.HasPrefix(ins, "turn off"):
+			fmt.Sscanf(ins, "turn off %d,%d through %d,%d", &x1, &y1, &x2, &y2)
 			changeLights(grid, x1, y1, x2, y2, false)
-		case "toggle":
+
+		case strings.HasPrefix(ins, "toggle"):
+			fmt.Sscanf(ins, "toggle %d,%d through %d,%d", &x1, &y1, &x2, &y2)
 			toggleLights(grid, x1, y1, x2, y2)
 		}
 	}
 	return countLightsOn(grid)
 }
 
-func partTwo(ins []string) int {
-	return -1
+func incrementDecrementBrightness(grid [][]int, x1 int, y1 int, x2 int, y2 int, change bool) [][]int {
+	for i := x1; i <= x2; i++ {
+		for j := y1; j <= y2; j++ {
+			if change {
+				grid[i][j]++
+			} else {
+				if grid[i][j] > 0 {
+					grid[i][j]--
+				}
+			}
+		}
+	}
+	return grid
+}
+
+func doubleIncrementBrightness(grid [][]int, x1 int, y1 int, x2 int, y2 int) [][]int {
+	for i := x1; i <= x2; i++ {
+		for j := y1; j <= y2; j++ {
+			grid[i][j] += 2
+		}
+	}
+	return grid
+}
+
+func countLightBrightness(grid [][]int) int {
+	out := 0
+	for _, i := range grid {
+		for _, j := range i {
+			out += j
+		}
+	}
+	return out
+}
+
+func partTwo(instructions []string) int {
+	grid := make([][]int, gridSize)
+	for i := range grid {
+		grid[i] = make([]int, gridSize)
+	}
+
+	for _, ins := range instructions {
+		var x1, y1, x2, y2 int
+
+		switch {
+		case strings.HasPrefix(ins, "turn on"):
+			fmt.Sscanf(ins, "turn on %d,%d through %d,%d", &x1, &y1, &x2, &y2)
+			incrementDecrementBrightness(grid, x1, y1, x2, y2, true)
+
+		case strings.HasPrefix(ins, "turn off"):
+			fmt.Sscanf(ins, "turn off %d,%d through %d,%d", &x1, &y1, &x2, &y2)
+			incrementDecrementBrightness(grid, x1, y1, x2, y2, false)
+
+		case strings.HasPrefix(ins, "toggle"):
+			fmt.Sscanf(ins, "toggle %d,%d through %d,%d", &x1, &y1, &x2, &y2)
+			doubleIncrementBrightness(grid, x1, y1, x2, y2)
+		}
+	}
+	return countLightBrightness(grid)
 }
 
 func main() {
@@ -173,7 +213,7 @@ func main() {
 	}
 
 	out1, out2 := 0, 0
-	instructions := getInstructions(getInput(filename))
+	instructions := getInput(filename)
 
 	if timing {
 		timeinfo(fmt.Sprintf("Setup took %s", time.Since(timeSetup)))
@@ -188,7 +228,7 @@ func main() {
 		timeTwo = time.Now()
 	}
 
-	// Part Two:
+	// Part Two: 14687245
 	out2 = partTwo(instructions)
 	doOutput(out1, out2)
 	if timing {
