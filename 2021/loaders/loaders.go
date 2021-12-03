@@ -2,14 +2,21 @@ package loaders
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"os"
 	"strconv"
 )
 
 // GetFilename creates the path and filename based on day and real / sample data.
-func GetFilename(day int) string {
-	suffix := ""
+func GetFilename(ctx context.Context, day int) string {
+	var (
+		suffix string
+	)
+
+	if ctx.Value("sample") == true {
+		suffix = "-sample"
+	}
 
 	return fmt.Sprintf("inputs/%02d%s.txt", day, suffix)
 }

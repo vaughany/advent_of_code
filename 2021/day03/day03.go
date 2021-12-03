@@ -2,7 +2,10 @@ package aoc2021day3
 
 import (
 	"context"
+	"fmt"
 	"strconv"
+
+	"github.com/vaughany/advent_of_code/output"
 )
 
 // Part One: 3309596
@@ -50,6 +53,7 @@ func Part2(ctx context.Context, instructions []string) int {
 	var (
 		oxygen int64
 		co2    int64
+		debug  = ctx.Value("debug").(bool)
 	)
 
 	// Keep an intact copy of the instructions for the CO2 loop, as we're doing destructive things to the instructions.
@@ -63,6 +67,10 @@ func Part2(ctx context.Context, instructions []string) int {
 			zeroesList []int
 			onesList   []int
 		)
+
+		if debug {
+			output.Info(fmt.Sprintf("'Oxygen' instructions: %d", len(instructions)))
+		}
 
 		if len(instructions) == 1 {
 			break
@@ -96,6 +104,10 @@ func Part2(ctx context.Context, instructions []string) int {
 			zeroesList []int
 			onesList   []int
 		)
+
+		if debug {
+			output.Info(fmt.Sprintf("'CO2' instructions: %d", len(instructions2)))
+		}
 
 		if len(instructions2) == 1 {
 			break
