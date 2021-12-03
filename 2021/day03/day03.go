@@ -62,10 +62,8 @@ func Part2(ctx context.Context, instructions []string) int {
 	// The 'oxygen' loop.
 	for j := 0; j < len(instructions[0]); j++ {
 		var (
-			zeroes     int
-			ones       int
-			zeroesList []int
-			onesList   []int
+			zeroesList []string
+			onesList   []string
 		)
 
 		if debug {
@@ -76,33 +74,29 @@ func Part2(ctx context.Context, instructions []string) int {
 			break
 		}
 
-		for k, ins := range instructions {
+		for _, ins := range instructions {
 			if string(ins[j]) == "0" {
-				zeroes++
-				zeroesList = append(zeroesList, k)
+				zeroesList = append(zeroesList, ins)
 			} else {
-				ones++
-				onesList = append(onesList, k)
+				onesList = append(onesList, ins)
 			}
 		}
 
 		switch {
-		case zeroes == ones:
-			instructions = remove(instructions, zeroesList)
-		case zeroes > ones:
-			instructions = remove(instructions, onesList)
-		case zeroes < ones:
-			instructions = remove(instructions, zeroesList)
+		case len(zeroesList) == len(onesList):
+			instructions = onesList
+		case len(zeroesList) > len(onesList):
+			instructions = zeroesList
+		case len(zeroesList) < len(onesList):
+			instructions = onesList
 		}
 	}
 
 	// The 'CO2' loop.
 	for j := 0; j < len(instructions[0]); j++ {
 		var (
-			zeroes     int
-			ones       int
-			zeroesList []int
-			onesList   []int
+			zeroesList []string
+			onesList   []string
 		)
 
 		if debug {
@@ -113,23 +107,21 @@ func Part2(ctx context.Context, instructions []string) int {
 			break
 		}
 
-		for k, ins := range instructions2 {
+		for _, ins := range instructions2 {
 			if string(ins[j]) == "0" {
-				zeroes++
-				zeroesList = append(zeroesList, k)
+				zeroesList = append(zeroesList, ins)
 			} else {
-				ones++
-				onesList = append(onesList, k)
+				onesList = append(onesList, ins)
 			}
 		}
 
 		switch {
-		case zeroes == ones:
-			instructions2 = remove(instructions2, onesList)
-		case zeroes > ones:
-			instructions2 = remove(instructions2, zeroesList)
-		case zeroes < ones:
-			instructions2 = remove(instructions2, onesList)
+		case len(zeroesList) == len(onesList):
+			instructions2 = zeroesList
+		case len(zeroesList) > len(onesList):
+			instructions2 = onesList
+		case len(zeroesList) < len(onesList):
+			instructions2 = zeroesList
 		}
 	}
 
@@ -137,26 +129,4 @@ func Part2(ctx context.Context, instructions []string) int {
 	co2, _ = strconv.ParseInt(instructions2[0], 2, 64)
 
 	return int(oxygen * co2)
-}
-
-func remove(instructions []string, removes []int) []string {
-	var (
-		newInstructions []string
-	)
-
-	for k, ins := range instructions {
-		found := false
-		for _, j := range removes {
-			if k == j {
-				found = true
-				break
-			}
-		}
-
-		if !found {
-			newInstructions = append(newInstructions, ins)
-		}
-	}
-
-	return newInstructions
 }
