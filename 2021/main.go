@@ -77,9 +77,25 @@ func main() {
 
 	// 2021, day 4.
 	if day == 0 || day == 4 {
+		timeSetup = time.Now()
 		output.Title(2021, 4)
-		ins := loaders.GetInputAsInts(loaders.GetFilename(ctx, 4))
+		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 4))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
 		output.Answer(1, aoc2021day4.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
 		output.Answer(2, aoc2021day4.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
 	}
 }
