@@ -10,6 +10,7 @@ import (
 	aoc2021day3 "github.com/vaughany/advent_of_code/day03"
 	aoc2021day4 "github.com/vaughany/advent_of_code/day04"
 	aoc2021day5 "github.com/vaughany/advent_of_code/day05"
+	aoc2021day6 "github.com/vaughany/advent_of_code/day06"
 	"github.com/vaughany/advent_of_code/loaders"
 	"github.com/vaughany/advent_of_code/output"
 )
@@ -118,4 +119,29 @@ func main() {
 			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
 		}
 	}
+
+	// 2021, day 6.
+	if day == 0 || day == 6 {
+		timeSetup = time.Now()
+		output.Title(2021, 6)
+		ins := loaders.GetCommaSeparatedInputAsInts(loaders.GetFilename(ctx, 6))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
+		output.Answer(1, aoc2021day6.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
+		output.Answer(2, aoc2021day6.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
+	}
+
 }

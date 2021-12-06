@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // GetFilename creates the path and filename based on day and real / sample data.
@@ -50,6 +51,7 @@ func LoadFile(filename string) []string {
 	return lines
 }
 
+// Takes a file where every line is an int, and returns a slice of ints.
 func GetInputAsInts(filename string) []int {
 	var (
 		input  = LoadFile(filename)
@@ -64,6 +66,23 @@ func GetInputAsInts(filename string) []int {
 	return output
 }
 
+// Takes a file where every line is a string, and returns a slice of strings.
 func GetInputAsStrings(filename string) []string {
 	return LoadFile(filename)
+}
+
+// Takes a one-line file where each data point is a comma-separated int, and returns a slice of ints.
+func GetCommaSeparatedInputAsInts(filename string) []int {
+	var (
+		input  = LoadFile(filename)
+		output []int
+	)
+
+	split := strings.Split(input[0], ",")
+	for _, s := range split {
+		int, _ := strconv.Atoi(s)
+		output = append(output, int)
+	}
+
+	return output
 }
