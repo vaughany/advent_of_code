@@ -55,14 +55,9 @@ func Part1And2(ctx context.Context, instructions []int) (int, int) {
 // 	return in
 // }
 
-func getFuel(steps int) int {
-	var out int
-
-	for i := steps; i >= 0; i-- {
-		out += i
-	}
-
-	return out
+// Gauss formula is so much faster: https://mathbitsnotebook.com/Algebra2/Sequences/SSGauss.html
+func getFuel(n int) int {
+	return (n * (1 + n)) / 2
 }
 
 func getLowestFuel(fuelUsed map[int]int) int {
