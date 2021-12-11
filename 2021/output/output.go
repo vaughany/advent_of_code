@@ -19,10 +19,11 @@ const (
 	InfoTypeTwo
 	InfoTypeBoth
 	InfoTypeEverything
+	InfoTypeWholeRun
 )
 
 func Title(year, day int) {
-	sendToLog(title, fmt.Sprintf("Advent of Code %d, Day %d.", year, day))
+	sendToLog(title, fmt.Sprintf("\nAdvent of Code %d, Day %d.", year, day))
 }
 
 func Info(text string) {
@@ -45,6 +46,8 @@ func TimeInfo(timeType TimeInfoType, timeDuration time.Duration) {
 		output = "Both Parts took "
 	case InfoTypeEverything:
 		output = "Everything took "
+	case InfoTypeWholeRun:
+		output = "\nThe whole run took "
 	}
 
 	sendToLog(timing, fmt.Sprintf("%s%s", output, timeDuration))
