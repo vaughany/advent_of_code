@@ -16,6 +16,7 @@ import (
 	aoc2021day9 "github.com/vaughany/advent_of_code/day09"
 	aoc2021day10 "github.com/vaughany/advent_of_code/day10"
 	aoc2021day11 "github.com/vaughany/advent_of_code/day11"
+	aoc2021day12 "github.com/vaughany/advent_of_code/day12"
 	"github.com/vaughany/advent_of_code/loaders"
 	"github.com/vaughany/advent_of_code/output"
 )
@@ -286,6 +287,30 @@ func main() {
 		}
 
 		output.Answer(2, aoc2021day11.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
+	}
+
+	// 2021, day 12.
+	if day == 0 || day == 12 {
+		timeSetup = time.Now()
+		output.Title(2021, 12)
+		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 12))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
+		output.Answer(1, aoc2021day12.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
+		output.Answer(2, aoc2021day12.Part2(ctx, ins))
 		if timing {
 			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
 			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
