@@ -59,11 +59,16 @@ func sendToLog(colour, contents string) {
 }
 
 func Answer(part int, output interface{}) {
-	partText := "One"
+	fmt.Printf("Part %s: %d\n", getPartText(part), output)
+}
 
-	if part == 2 {
-		partText = "Two"
+func AnswerString(part int, output interface{}) {
+	fmt.Printf("Part %s: %s\n", getPartText(part), output)
+}
+
+func getPartText(part int) string {
+	if part == 1 {
+		return "One"
 	}
-
-	fmt.Printf("Part %s: %d\n", partText, output)
+	return "Two"
 }
