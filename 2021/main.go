@@ -19,6 +19,14 @@ import (
 	aoc2021day12 "github.com/vaughany/advent_of_code/day12"
 	aoc2021day13 "github.com/vaughany/advent_of_code/day13"
 	aoc2021day14 "github.com/vaughany/advent_of_code/day14"
+	aoc2021day15 "github.com/vaughany/advent_of_code/day15"
+	aoc2021day16 "github.com/vaughany/advent_of_code/day16"
+	aoc2021day17 "github.com/vaughany/advent_of_code/day17"
+
+	// aoc2021day18 "github.com/vaughany/advent_of_code/day18"
+	// aoc2021day19 "github.com/vaughany/advent_of_code/day19"
+	// aoc2021day20 "github.com/vaughany/advent_of_code/day20"
+	aoc2021day21 "github.com/vaughany/advent_of_code/day21"
 	"github.com/vaughany/advent_of_code/loaders"
 	"github.com/vaughany/advent_of_code/output"
 )
@@ -356,6 +364,106 @@ func main() {
 		}
 
 		output.Answer(2, aoc2021day14.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
+	}
+
+	// 2021, day 15.
+	if day == 0 || day == 15 {
+		timeSetup = time.Now()
+		output.Title(2021, 15)
+		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 15))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
+		output.Answer(1, aoc2021day15.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
+		output.Answer(2, aoc2021day15.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
+	}
+
+	// 2021, day 16.
+	if day == 0 || day == 16 {
+		timeSetup = time.Now()
+		output.Title(2021, 16)
+		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 16))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
+		output.Answer(1, aoc2021day16.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
+		output.Answer(2, aoc2021day16.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
+	}
+
+	// 2021, day 17.
+	if day == 0 || day == 17 {
+		timeSetup = time.Now()
+		output.Title(2021, 17)
+		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 17))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
+		output.Answer(1, aoc2021day17.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
+		output.Answer(2, aoc2021day17.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
+	}
+
+	//
+
+	//
+
+	// 2021, day 21.
+	if day == 0 || day == 21 {
+		timeSetup = time.Now()
+		output.Title(2021, 21)
+		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 21))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
+		output.Answer(1, aoc2021day21.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
+		output.Answer(2, aoc2021day21.Part2(ctx, ins))
 		if timing {
 			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
 			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
