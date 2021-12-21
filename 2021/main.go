@@ -35,12 +35,13 @@ func main() {
 
 	var (
 		day                                         int
-		debug, timing, sample                       bool
+		debug, timing, mainTiming, sample           bool
 		timeSetup, timeOne, timeTwo, timeEverything time.Time
 	)
 
 	flag.BoolVar(&debug, "d", debug, "Display debugging information")
 	flag.BoolVar(&timing, "t", timing, "Display timing information")
+	flag.BoolVar(&mainTiming, "T", mainTiming, "Display timing information only at the end (prevents output slowdown)")
 	flag.IntVar(&day, "day", day, "Run just this day")
 	flag.BoolVar(&sample, "s", sample, "Use the sample input data")
 	flag.Parse()
@@ -475,7 +476,7 @@ func main() {
 
 	//
 
-	if timing && day == 0 {
+	if (timing && day == 0) || mainTiming {
 		output.TimeInfo(output.InfoTypeWholeRun, time.Since(timeEverything))
 	}
 
