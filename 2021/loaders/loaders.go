@@ -71,6 +71,11 @@ func GetInputAsStrings(filename string) []string {
 	return LoadFile(filename)
 }
 
+// Takes a one-line file and returns a string.
+func GetInputAsString(filename string) string {
+	return LoadFile(filename)[0]
+}
+
 // Takes a one-line file where each data point is a comma-separated int, and returns a slice of ints.
 func GetCommaSeparatedInputAsInts(filename string) []int {
 	var (

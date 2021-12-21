@@ -399,7 +399,7 @@ func main() {
 	if day == 0 || day == 16 {
 		timeSetup = time.Now()
 		output.Title(2021, 16)
-		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 16))
+		ins := loaders.GetInputAsString(loaders.GetFilename(ctx, 16))
 		if timing {
 			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
 			timeOne = time.Now()
@@ -423,7 +423,7 @@ func main() {
 	if day == 0 || day == 17 {
 		timeSetup = time.Now()
 		output.Title(2021, 17)
-		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 17))
+		ins := loaders.GetInputAsString(loaders.GetFilename(ctx, 17))
 		if timing {
 			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
 			timeOne = time.Now()
