@@ -27,6 +27,12 @@ import (
 	// aoc2021day19 "github.com/vaughany/advent_of_code/day19"
 	// aoc2021day20 "github.com/vaughany/advent_of_code/day20"
 	aoc2021day21 "github.com/vaughany/advent_of_code/day21"
+	aoc2021day22 "github.com/vaughany/advent_of_code/day22"
+
+	// aoc2021day23 "github.com/vaughany/advent_of_code/day23"
+	// aoc2021day24 "github.com/vaughany/advent_of_code/day24"
+	aoc2021day25 "github.com/vaughany/advent_of_code/day25"
+
 	"github.com/vaughany/advent_of_code/loaders"
 	"github.com/vaughany/advent_of_code/output"
 )
@@ -465,6 +471,58 @@ func main() {
 		}
 
 		output.Answer(2, aoc2021day21.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
+	}
+
+	// 2021, day 22.
+	if day == 0 || day == 22 {
+		timeSetup = time.Now()
+		output.Title(2021, 22)
+		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 22))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
+		output.Answer(1, aoc2021day22.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
+		output.Answer(2, aoc2021day22.Part2(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
+			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))
+			output.TimeInfo(output.InfoTypeEverything, time.Since(timeSetup))
+		}
+	}
+
+	//
+
+	//
+
+	// 2021, day 25.
+	if day == 0 || day == 25 {
+		timeSetup = time.Now()
+		output.Title(2021, 25)
+		ins := loaders.GetInputAsStrings(loaders.GetFilename(ctx, 25))
+		if timing {
+			output.TimeInfo(output.InfoTypeSetup, time.Since(timeSetup))
+			timeOne = time.Now()
+		}
+
+		output.Answer(1, aoc2021day25.Part1(ctx, ins))
+		if timing {
+			output.TimeInfo(output.InfoTypeOne, time.Since(timeOne))
+			timeTwo = time.Now()
+		}
+
+		output.Answer(2, aoc2021day25.Part2(ctx, ins))
 		if timing {
 			output.TimeInfo(output.InfoTypeTwo, time.Since(timeTwo))
 			output.TimeInfo(output.InfoTypeBoth, time.Since(timeOne))

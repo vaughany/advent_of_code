@@ -28,11 +28,7 @@ func Part2(ctx context.Context, instructions []int) int {
 func countHigher(ctx context.Context, in []int) int {
 	var out int
 
-	for i := range in {
-		if i == 0 {
-			continue
-		}
-
+	for i := 1; i < len(in); i++ {
 		if in[i] > in[i-1] {
 			out++
 		}
